@@ -1,0 +1,127 @@
+[gd_scene format=3 uid="uid://dufx7ufa37pcb"]
+
+[ext_resource type="Script" uid="uid://dg7qjub1vdpm4" path="res://scenes/robots/infantry.gd" id="1_v3nog"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_chassis"]
+radius = 0.36
+height = 0.72
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glv2v"]
+albedo_color = Color(1, 0.07450981, 0.94509804, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xrivr"]
+size = Vector3(0.8, 0.6, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2u45w"]
+albedo_color = Color(1, 1, 0.21176471, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_13qdw"]
+size = Vector3(0.5, 0.2, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_18shg"]
+albedo_color = Color(0.05882353, 0.76862746, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xrivr"]
+top_radius = 0.06
+bottom_radius = 0.06
+height = 0.6
+
+[sub_resource type="StandardMaterial3D" id="RobotDark"]
+albedo_color = Color(0.055, 0.07, 0.085, 1)
+metallic = 0.72
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="RobotMetal"]
+albedo_color = Color(0.24, 0.29, 0.33, 1)
+metallic = 0.82
+roughness = 0.24
+
+[sub_resource type="StandardMaterial3D" id="ArmorGlow"]
+albedo_color = Color(1, 0.08, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.03, 0.06, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="CylinderMesh" id="WheelMesh"]
+top_radius = 0.19
+bottom_radius = 0.19
+height = 0.14
+radial_segments = 16
+
+[sub_resource type="BoxMesh" id="ArmorPlateMesh"]
+size = Vector3(0.52, 0.2, 0.055)
+
+[sub_resource type="BoxMesh" id="ChassisDeckMesh"]
+size = Vector3(0.68, 0.14, 0.68)
+
+[node name="Infantry" type="CharacterBody3D" unique_id=66680019]
+script = ExtResource("1_v3nog")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1563354481]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("CapsuleShape3D_chassis")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=129956473]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+material_override = SubResource("RobotDark")
+mesh = SubResource("BoxMesh_xrivr")
+
+[node name="ChassisDeck" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.62, 0)
+material_override = SubResource("RobotMetal")
+mesh = SubResource("ChassisDeckMesh")
+
+[node name="WheelFL" type="MeshInstance3D" parent="."]
+position = Vector3(-0.42, 0.22, -0.29)
+rotation_degrees = Vector3(0, 0, 90)
+material_override = SubResource("RobotDark")
+mesh = SubResource("WheelMesh")
+
+[node name="WheelFR" type="MeshInstance3D" parent="."]
+position = Vector3(0.42, 0.22, -0.29)
+rotation_degrees = Vector3(0, 0, 90)
+material_override = SubResource("RobotDark")
+mesh = SubResource("WheelMesh")
+
+[node name="WheelBL" type="MeshInstance3D" parent="."]
+position = Vector3(-0.42, 0.22, 0.29)
+rotation_degrees = Vector3(0, 0, 90)
+material_override = SubResource("RobotDark")
+mesh = SubResource("WheelMesh")
+
+[node name="WheelBR" type="MeshInstance3D" parent="."]
+position = Vector3(0.42, 0.22, 0.29)
+rotation_degrees = Vector3(0, 0, 90)
+material_override = SubResource("RobotDark")
+mesh = SubResource("WheelMesh")
+
+[node name="FrontArmor" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.38, -0.415)
+material_override = SubResource("ArmorGlow")
+mesh = SubResource("ArmorPlateMesh")
+
+[node name="RearArmor" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.38, 0.415)
+rotation_degrees = Vector3(0, 180, 0)
+material_override = SubResource("ArmorGlow")
+mesh = SubResource("ArmorPlateMesh")
+
+[node name="GimbalYaw" type="Node3D" parent="." unique_id=1367646080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+
+[node name="GimbalPitch" type="Node3D" parent="GimbalYaw" unique_id=843779949]
+
+[node name="TurretMesh" type="MeshInstance3D" parent="GimbalYaw/GimbalPitch" unique_id=593111547]
+material_override = SubResource("RobotMetal")
+mesh = SubResource("BoxMesh_13qdw")
+
+[node name="BarrelMesh" type="MeshInstance3D" parent="GimbalYaw/GimbalPitch" unique_id=9427500]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, -0.4)
+material_override = SubResource("StandardMaterial3D_18shg")
+mesh = SubResource("CylinderMesh_xrivr")
+
+[node name="Aimcamera" type="Camera3D" parent="GimbalYaw/GimbalPitch" unique_id=1864478875]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, -0.15)
+
+[node name="Muzzle" type="Marker3D" parent="GimbalYaw/GimbalPitch" unique_id=1521409125]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.7)

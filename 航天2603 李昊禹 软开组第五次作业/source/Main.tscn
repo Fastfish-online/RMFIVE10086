@@ -1,0 +1,105 @@
+[gd_scene load_steps=7 format=3 uid="uid://chbk4j4hmracs"]
+
+[ext_resource type="PackedScene" uid="uid://dufx7ufa37pcb" path="res://scenes/robots/infantry.tscn" id="1_robot"]
+[ext_resource type="Script" path="res://scripts/battlefield.gd" id="2_field"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="3_game"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMaterial"]
+sky_top_color = Color(0.075, 0.12, 0.19, 1)
+sky_horizon_color = Color(0.48, 0.58, 0.68, 1)
+ground_bottom_color = Color(0.035, 0.04, 0.05, 1)
+ground_horizon_color = Color(0.32, 0.36, 0.4, 1)
+
+[sub_resource type="Sky" id="Sky"]
+sky_material = SubResource("SkyMaterial")
+
+[sub_resource type="Environment" id="Environment"]
+background_mode = 2
+sky = SubResource("Sky")
+ambient_light_source = 3
+ambient_light_color = Color(0.62, 0.68, 0.75, 1)
+ambient_light_energy = 0.65
+tonemap_mode = 2
+fog_enabled = true
+fog_light_color = Color(0.19, 0.24, 0.3, 1)
+fog_light_energy = 0.35
+fog_density = 0.006
+
+[node name="Main" type="Node3D"]
+script = ExtResource("3_game")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-55, -35, 0)
+light_color = Color(1, 0.94, 0.84, 1)
+light_energy = 1.35
+shadow_enabled = true
+directional_shadow_max_distance = 45.0
+
+[node name="RedArenaLight" type="OmniLight3D" parent="."]
+position = Vector3(-4.5, 4.8, 0)
+light_color = Color(1, 0.18, 0.12, 1)
+light_energy = 5.0
+omni_range = 8.0
+shadow_enabled = true
+
+[node name="BlueArenaLight" type="OmniLight3D" parent="."]
+position = Vector3(4.5, 4.8, 0)
+light_color = Color(0.05, 0.8, 1, 1)
+light_energy = 5.0
+omni_range = 8.0
+shadow_enabled = true
+
+[node name="Battlefield" type="Node3D" parent="."]
+scale = Vector3(0.428571, 1, 0.533333)
+script = ExtResource("2_field")
+
+[node name="Infantry" parent="." instance=ExtResource("1_robot")]
+position = Vector3(-4.63, 0.3, -2.1)
+rotation_degrees = Vector3(0, -90, 0)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Crosshair" type="Label" parent="HUD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -16.0
+offset_right = 10.0
+offset_bottom = 16.0
+theme_override_colors/font_color = Color(1, 0.82, 0.25, 1)
+theme_override_font_sizes/font_size = 24
+text = "+"
+horizontal_alignment = 1
+
+[node name="ReticleRing" type="Label" parent="HUD"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_top = -31.0
+offset_right = 42.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0.25, 0.95, 1, 0.72)
+theme_override_font_sizes/font_size = 28
+text = "〔     〕"
+horizontal_alignment = 1
+
+[node name="Help" type="Label" parent="HUD"]
+offset_left = 18.0
+offset_top = 16.0
+offset_right = 430.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0.94, 0.97, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.9)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 16
+text = "RMUL 2023 3V3 SIMULATION\nWASD Move   Space Jump   LMB Fire   R Reset   M Overview   Esc Mouse"
